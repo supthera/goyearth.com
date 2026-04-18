@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 /**
- * Fetches Natural Earth 50m country polygons, groups them by continent,
+ * Fetches Natural Earth 110m country polygons, groups them by continent,
  * projects every coordinate with North-Pole-centred azimuthal equidistant
  * projection, simplifies, and outputs SVG <g> elements ready for the HTML.
- *
- * 50m = ~5x more coastline detail than 110m.
  */
 
 const https = require("https");
@@ -23,15 +21,6 @@ function project(lat, lon) {
   const x = CX + r * Math.sin(lonRad);
   const y = CY - r * Math.cos(lonRad);
   return [+(x.toFixed(1)), +(y.toFixed(1))];
-}
-
-/* ── polygon area in SVG space (for filtering tiny islands) ── */
-function svgArea(projected) {
-  let area = 0;
-  for (let i = 0, j = projected.length - 1; i < projected.length; j = i++) {
-    area += (projected[j][0] + projected[i][0]) * (projected[j][1] - projected[i][1]);
-  }
-  return Math.abs(area / 2);
 }
 
 /* ── continent mapping (ISO A3 → continent) ── */
@@ -129,10 +118,8 @@ function simplify(pts, tol) {
 }
 
 /* ── ring to SVG path ── */
-function ringToSVG(coords, tolerance, minArea) {
+function ringToSVG(coords, tolerance) {
   const projected = coords.map(([lon, lat]) => project(lat, lon));
-  // Skip tiny polygons that would be invisible specks
-  if (minArea && svgArea(projected) < minArea) return null;
   const simple = simplify(projected, tolerance);
   if (simple.length < 3) return null;
   return simple.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x},${y}`).join(" ") + " Z";
@@ -140,17 +127,17 @@ function ringToSVG(coords, tolerance, minArea) {
 
 /* ── main ── */
 async function main() {
-  const url = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
-  process.stderr.write("Fetching Natural Earth 50m country polygons…\n");
+  const url = "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson";
+  process.stderr.write("Fetching Natural Earth country polygons…\n");
 
   let geo;
   try {
     geo = await fetchJSON(url);
   } catch (e) {
-    // Fallback to 110m
-    process.stderr.write("50m failed, falling back to 110m…\n");
+    // Fallback URL
+    process.stderr.write("Primary URL failed, trying fallback…\n");
     geo = await fetchJSON(
-      "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+      "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
     );
   }
 
@@ -164,8 +151,8 @@ async function main() {
 
   for (const feat of geo.features) {
     const props = feat.properties;
-    const code = props.ISO_A3 || props["ISO3166-1-Alpha-3"] || props.iso_a3 || props.ISO3 || props.ADM0_A3 || props.id || "";
-    const name = props.name || props.NAME || props.ADMIN || props.NAME_LONG || "";
+    const code = props["ISO3166-1-Alpha-3"] || props.ISO_A3 || props.iso_a3 || props.ISO3 || props.id || "";
+    const name = props.name || props.NAME || props.ADMIN || "";
     let cont = continentOf[code];
 
     // Try to match by name for Russia → split handled below
@@ -195,16 +182,6 @@ async function main() {
       continue;
     }
 
-    // Antarctica handled from real data now
-    if (code === "ATA" || cont === "Antarctica") {
-      for (const poly of polys) {
-        for (const ring of poly) {
-          continents["Antarctica"].push(ring);
-        }
-      }
-      continue;
-    }
-
     for (const poly of polys) {
       for (const ring of poly) {
         continents[cont].push(ring);
@@ -212,19 +189,17 @@ async function main() {
     }
   }
 
-  // Tolerance for simplification (SVG pixels) — 0.8 for fine coastline detail
-  const TOL = 0.8;
-  // Minimum polygon area in SVG pixels² — skip tiny specks
-  const MIN_AREA = 4;
+  // Tolerance for simplification (SVG pixels)
+  const TOL = 2.5;
 
   process.stderr.write("Projecting and simplifying…\n");
 
   for (const [name, rings] of Object.entries(continents)) {
-    if (name === "Antarctica") continue; // handled separately below
+    if (name === "Antarctica") continue; // handled separately
 
     const paths = [];
     for (const ring of rings) {
-      const d = ringToSVG(ring, TOL, MIN_AREA);
+      const d = ringToSVG(ring, TOL);
       if (d) paths.push(d);
     }
     if (paths.length === 0) continue;
@@ -234,53 +209,30 @@ async function main() {
     console.log(`            </g>`);
   }
 
-  // Antarctica: use real coastline data projected, then add outer boundary ring
-  const antarcticaPaths = [];
-  const antRings = continents["Antarctica"];
-  if (antRings.length > 0) {
-    for (const ring of antRings) {
-      const d = ringToSVG(ring, 1.5, 8); // slightly more aggressive simplification for Antarctica
-      if (d) antarcticaPaths.push(d);
-    }
-  }
-
-  // If real data produced paths, use them; wrap with an outer boundary ring
-  // The outer ring represents the ice shelf / map edge
-  const outerR = 385;
-  const n = 120;
-  let outerRing = "";
+  // Antarctica as thick outer ring (like the Gleason map)
+  const outerR = 385, innerR = 340;
+  const n = 72;
+  let ad = "";
   for (let i = 0; i < n; i++) {
     const a = (i / n) * 2 * Math.PI;
-    const jitter = 1.5 + 3 * Math.sin(a * 5) + 1.5 * Math.sin(a * 11);
+    const jitter = 2 + 4 * Math.sin(a * 5);
     const r = outerR + jitter;
     const x = CX + r * Math.sin(a);
     const y = CY - r * Math.cos(a);
-    outerRing += `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} `;
+    ad += `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} `;
   }
-  outerRing += "Z";
-
-  // Combine: outer boundary ring + real coastline paths (if any) with evenodd fill
-  let antarcticaD;
-  if (antarcticaPaths.length > 0) {
-    antarcticaD = outerRing + " " + antarcticaPaths.join(" ");
-  } else {
-    // Fallback: procedural annular ring if no real data
-    const innerR = 340;
-    let innerRing = "";
-    for (let i = n - 1; i >= 0; i--) {
-      const a = (i / n) * 2 * Math.PI;
-      const jitter = 3 * Math.sin(a * 7);
-      const r = innerR + jitter;
-      const x = CX + r * Math.sin(a);
-      const y = CY - r * Math.cos(a);
-      innerRing += `${i === n - 1 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} `;
-    }
-    innerRing += "Z";
-    antarcticaD = outerRing + " " + innerRing;
+  ad += "Z ";
+  for (let i = n - 1; i >= 0; i--) {
+    const a = (i / n) * 2 * Math.PI;
+    const jitter = 3 * Math.sin(a * 7);
+    const r = innerR + jitter;
+    const x = CX + r * Math.sin(a);
+    const y = CY - r * Math.cos(a);
+    ad += `${i === n - 1 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} `;
   }
-
+  ad += "Z";
   console.log(`            <g class="continent" data-name="Antarctica" tabindex="0">`);
-  console.log(`              <path d="${antarcticaD}" fill-rule="evenodd" />`);
+  console.log(`              <path d="${ad}" fill-rule="evenodd" />`);
   console.log(`            </g>`);
 
   process.stderr.write("Done.\n");

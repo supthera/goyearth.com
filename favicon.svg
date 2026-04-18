@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Red outer ring -->
+  <circle cx="32" cy="32" r="31" fill="#d94a4a"/>
+  <circle cx="32" cy="32" r="27" fill="#d94a4a" stroke="#8b2020" stroke-width="0.5"/>
+  <!-- Tick marks around ring -->
+  <line x1="32" y1="1" x2="32" y2="5" stroke="#3a2a1a" stroke-width="0.8"/>
+  <line x1="32" y1="59" x2="32" y2="63" stroke="#3a2a1a" stroke-width="0.8"/>
+  <line x1="1" y1="32" x2="5" y2="32" stroke="#3a2a1a" stroke-width="0.8"/>
+  <line x1="59" y1="32" x2="63" y2="32" stroke="#3a2a1a" stroke-width="0.8"/>
+  <line x1="10" y1="10" x2="12.8" y2="12.8" stroke="#3a2a1a" stroke-width="0.6"/>
+  <line x1="51.2" y1="51.2" x2="54" y2="54" stroke="#3a2a1a" stroke-width="0.6"/>
+  <line x1="54" y1="10" x2="51.2" y2="12.8" stroke="#3a2a1a" stroke-width="0.6"/>
+  <line x1="12.8" y1="51.2" x2="10" y2="54" stroke="#3a2a1a" stroke-width="0.6"/>
+  <!-- Ocean -->
+  <circle cx="32" cy="32" r="23" fill="#c8dde6"/>
+  <!-- Ice wall ring (Antarctica) -->
+  <circle cx="32" cy="32" r="23" fill="none" stroke="#e0d8c8" stroke-width="2.5"/>
+  <!-- Graticule -->
+  <circle cx="32" cy="32" r="16" fill="none" stroke="#6a99a3" stroke-width="0.4" opacity="0.5"/>
+  <circle cx="32" cy="32" r="9" fill="none" stroke="#6a99a3" stroke-width="0.4" opacity="0.5"/>
+  <line x1="32" y1="9" x2="32" y2="55" stroke="#6a99a3" stroke-width="0.4" opacity="0.4"/>
+  <line x1="9" y1="32" x2="55" y2="32" stroke="#6a99a3" stroke-width="0.4" opacity="0.4"/>
+  <line x1="14" y1="14" x2="50" y2="50" stroke="#6a99a3" stroke-width="0.3" opacity="0.3"/>
+  <line x1="50" y1="14" x2="14" y2="50" stroke="#6a99a3" stroke-width="0.3" opacity="0.3"/>
+  <!-- Continents (simplified) -->
+  <!-- North America -->
+  <path d="M24,19 Q22,21 21,25 Q22,26.5 24,26 Q26,24 27,21 Q26,19 24,19Z" fill="#8aad5a" stroke="#4a5a2a" stroke-width="0.5"/>
+  <!-- South America -->
+  <path d="M22,27 Q20,31 21,35 Q22.5,36 24,33 Q24,29 23,27Z" fill="#8aad5a" stroke="#4a5a2a" stroke-width="0.5"/>
+  <!-- Europe -->
+  <path d="M33,21 Q32,23 32.5,25 Q34,25.5 35,24 Q35,22 33.5,21Z" fill="#8aad5a" stroke="#4a5a2a" stroke-width="0.5"/>
+  <!-- Africa -->
+  <path d="M35,26 Q34,29 35,34 Q37,35.5 39,33 Q39.5,29 38,26 Q36,25.5 35,26Z" fill="#8aad5a" stroke="#4a5a2a" stroke-width="0.5"/>
+  <!-- Asia -->
+  <path d="M37,19 Q40,20 43,24 Q44,28 43,31 Q41,29 39,26 Q37,22 37,19Z" fill="#8aad5a" stroke="#4a5a2a" stroke-width="0.5"/>
+  <!-- Australia -->
+  <path d="M42,35 Q44,37 44,40 Q42,41 40,39 Q40,36 42,35Z" fill="#8aad5a" stroke="#4a5a2a" stroke-width="0.5"/>
+  <!-- North Pole dot -->
+  <circle cx="32" cy="32" r="1.5" fill="#f0dcc0" stroke="#5a3a1a" stroke-width="0.8"/>
+</svg>

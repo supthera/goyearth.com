@@ -12,7 +12,8 @@ function placeRingMarks() {
 
   const ringRect = ring.getBoundingClientRect();
   const radius = ringRect.width / 2;
-  const markRadius = radius - 38;
+  const borderWidth = parseFloat(getComputedStyle(ring).borderTopWidth);
+  const markRadius = radius - borderWidth * 0.65;
 
   romanNumerals.forEach((text, index) => {
     const angle = ((index * 30) - 90) * (Math.PI / 180);
@@ -22,7 +23,9 @@ function placeRingMarks() {
     const mark = document.createElement("span");
     mark.className = "ring-mark";
     mark.textContent = text;
-    mark.style.transform = `translate(${x}px, ${y}px) rotate(${index * 30}deg)`;
+    mark.style.left = `calc(50% + ${x}px)`;
+    mark.style.top = `calc(50% + ${y}px)`;
+    mark.style.transform = `translate(-50%, -50%) rotate(${index * 30}deg)`;
 
     ring.appendChild(mark);
   });
@@ -43,6 +46,10 @@ function resetLegend() {
   legendNote.textContent = "Each component responds independently.";
 }
 
+const tooltip = document.createElement("div");
+tooltip.className = "map-tooltip";
+document.body.appendChild(tooltip);
+
 continents.forEach((continent) => {
   const name = continent.dataset.name || "Unknown";
 
@@ -50,11 +57,19 @@ continents.forEach((continent) => {
     continents.forEach((item) => item.classList.remove("active"));
     continent.classList.add("active");
     setActiveContinent(name);
+    tooltip.textContent = name;
+    tooltip.classList.add("visible");
+  });
+
+  continent.addEventListener("mousemove", (e) => {
+    tooltip.style.left = e.clientX + 14 + "px";
+    tooltip.style.top = e.clientY + 14 + "px";
   });
 
   continent.addEventListener("mouseleave", () => {
     continent.classList.remove("active");
     resetLegend();
+    tooltip.classList.remove("visible");
   });
 
   continent.addEventListener("focus", () => {

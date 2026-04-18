@@ -79,9 +79,9 @@ h1 {
 
 .time-ring {
   position: absolute;
-  inset: -38px;
+  inset: calc(8.5% - 38px);
   border-radius: 50%;
-  border: 76px solid var(--ring);
+  border: 38px solid var(--ring);
   box-shadow: inset 0 0 0 3px rgba(55, 32, 25, 0.45), 0 24px 50px rgba(45, 33, 22, 0.2);
   pointer-events: none;
   animation: settle 900ms ease-out;
@@ -89,14 +89,12 @@ h1 {
 
 .ring-mark {
   position: absolute;
-  left: 50%;
-  top: 50%;
   font-family: "Cinzel", serif;
   font-size: clamp(0.8rem, 1.6vw, 1.2rem);
   color: #592f2f;
-  transform-origin: 0 0;
   user-select: none;
   pointer-events: none;
+  line-height: 1;
 }
 
 .map-svg {
@@ -185,6 +183,57 @@ h1 {
   font-size: 0.95rem;
 }
 
+.map-tooltip {
+  position: fixed;
+  padding: 0.35rem 0.7rem;
+  background: rgba(20, 18, 15, 0.92);
+  color: #f0ece4;
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  z-index: 20;
+  white-space: nowrap;
+}
+
+.map-tooltip.visible {
+  opacity: 1;
+}
+
+.site-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.55rem 1rem;
+  background: rgba(20, 18, 15, 0.9);
+  color: #f0ece4;
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+  z-index: 30;
+}
+
+.banner-close {
+  background: none;
+  border: none;
+  color: #f0ece4;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 150ms;
+}
+
+.banner-close:hover {
+  opacity: 1;
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -226,7 +275,8 @@ h1 {
   }
 
   .time-ring {
-    border-width: 50px;
+    border-width: 25px;
+    inset: calc(8.5% - 25px);
   }
 
   .map-svg {

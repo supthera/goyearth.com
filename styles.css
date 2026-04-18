@@ -1,0 +1,239 @@
+:root {
+  --paper: #ebe5d5;
+  --ink: #2a2316;
+  --ring: #f06c7a;
+  --ocean-shadow: #88a7ad;
+  --continent-fill: #c7d79f;
+  --continent-stroke: #556037;
+  --continent-active: #ffcf7d;
+  --continent-glow: rgba(255, 183, 92, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Cormorant Garamond", serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 20% 10%, #f7f2e3 0%, #dfd6c0 55%, #c8bca0 100%);
+  overflow-x: hidden;
+}
+
+.paper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image:
+    repeating-linear-gradient(10deg, rgba(70, 50, 30, 0.03) 0, rgba(70, 50, 30, 0.03) 1px, transparent 1px, transparent 6px),
+    repeating-linear-gradient(80deg, rgba(70, 50, 30, 0.02) 0, rgba(70, 50, 30, 0.02) 1px, transparent 1px, transparent 7px);
+}
+
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.2rem 3rem;
+}
+
+.title-wrap {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.eyebrow {
+  font-size: 1rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  margin-bottom: 0.1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.04em;
+}
+
+.subtitle {
+  margin-top: 0.35rem;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+}
+
+.map-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 1.5rem auto 0;
+  max-width: min(90vw, 920px);
+}
+
+.map-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.time-ring {
+  position: absolute;
+  inset: -38px;
+  border-radius: 50%;
+  border: 76px solid var(--ring);
+  box-shadow: inset 0 0 0 3px rgba(55, 32, 25, 0.45), 0 24px 50px rgba(45, 33, 22, 0.2);
+  pointer-events: none;
+  animation: settle 900ms ease-out;
+}
+
+.ring-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.8rem, 1.6vw, 1.2rem);
+  color: #592f2f;
+  transform-origin: 0 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.map-svg {
+  width: min(75vw, 760px);
+  aspect-ratio: 1;
+  display: block;
+  z-index: 2;
+  animation: rise 1s ease-out;
+  overflow: visible;
+}
+
+.graticule circle,
+.graticule line {
+  fill: none;
+  stroke: #52777f;
+  stroke-width: 1;
+  stroke-opacity: 0.42;
+}
+
+.continent path {
+  fill: var(--continent-fill);
+  stroke: var(--continent-stroke);
+  stroke-width: 2;
+  transition: fill 220ms ease, stroke-width 220ms ease, filter 220ms ease, transform 220ms ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.continent {
+  cursor: pointer;
+  outline: none;
+}
+
+.continent:hover path,
+.continent:focus-visible path,
+.continent.active path {
+  fill: var(--continent-active);
+  stroke-width: 2.6;
+}
+
+.continent[data-name="Antarctica"] path {
+  fill: #e8e2d4;
+  stroke: #8a7e6a;
+  stroke-width: 1.2;
+}
+
+.continent[data-name="Antarctica"]:hover path,
+.continent[data-name="Antarctica"].active path {
+  fill: #ffeec4;
+  stroke-width: 1.6;
+}
+
+.pole-core {
+  fill: #f8daba;
+  stroke: #603f2d;
+  stroke-width: 2;
+}
+
+.legend {
+  position: absolute;
+  right: -2.3rem;
+  bottom: 3rem;
+  background: rgba(248, 242, 227, 0.95);
+  border: 2px solid #5d4a38;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  box-shadow: 0 8px 20px rgba(42, 35, 22, 0.17);
+  max-width: 220px;
+  z-index: 3;
+}
+
+.legend h2 {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+}
+
+.active-name {
+  margin: 0.3rem 0 0;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.active-note {
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 1020px) {
+  .legend {
+    position: static;
+    margin-top: 1rem;
+    width: min(95%, 420px);
+    text-align: center;
+  }
+
+  .map-shell {
+    max-width: min(94vw, 880px);
+  }
+}
+
+@media (max-width: 700px) {
+  .layout {
+    padding: 1rem 0.7rem 1.6rem;
+  }
+
+  .time-ring {
+    border-width: 50px;
+  }
+
+  .map-svg {
+    width: min(82vw, 560px);
+  }
+
+  .eyebrow {
+    letter-spacing: 0.07em;
+  }
+}

@@ -21,6 +21,172 @@
       .pdf-canvas-wrap { overflow: hidden; height: 78vh; min-height: 420px; background: #c8bfad; display: flex; justify-content: center; align-items: center; gap: 3px; padding: 1rem; }
       .pdf-canvas { display: block; box-shadow: 0 4px 20px rgba(42,35,22,0.25); }
       main.about-page { max-width: min(98vw, 1600px); }
+
+      /* ── Audio player ───────────────────────────────────────────────── */
+      .audio-player {
+        margin-top: 2.5rem;
+        border: 2px solid rgba(42, 35, 22, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+        background: rgba(42, 35, 22, 0.03);
+        box-shadow: 0 8px 24px rgba(42, 35, 22, 0.1);
+      }
+
+      .audio-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.7rem 1.2rem;
+        background: rgba(42, 35, 22, 0.07);
+        border-bottom: 1px solid rgba(42, 35, 22, 0.15);
+      }
+
+      .audio-header-title {
+        font-family: "Cinzel", serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.07em;
+        color: #4a3d2a;
+        flex: 1;
+      }
+
+      .audio-header-credit {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.85rem;
+        color: #7a6a55;
+        letter-spacing: 0.02em;
+      }
+
+      .audio-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 1.2rem;
+        border-bottom: 1px solid rgba(42, 35, 22, 0.1);
+        background: rgba(248, 242, 227, 0.5);
+      }
+
+      .audio-play-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(42, 35, 22, 0.35);
+        background: rgba(248, 242, 227, 0.95);
+        color: #2a2316;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background 150ms, border-color 150ms;
+      }
+
+      .audio-play-btn:hover { background: #fff8ec; border-color: #9c7c3a; }
+
+      .audio-play-btn svg { width: 14px; height: 14px; fill: currentColor; }
+
+      .audio-progress-wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .audio-track-name {
+        font-family: "Cinzel", serif;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+        color: #4a3d2a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .audio-progress {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(42, 35, 22, 0.15);
+        cursor: pointer;
+        outline: none;
+      }
+
+      .audio-progress::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #9c7c3a;
+        cursor: pointer;
+        margin-top: -4px;
+      }
+
+      .audio-progress::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(to right, #9c7c3a var(--progress, 0%), rgba(42,35,22,0.15) var(--progress, 0%));
+      }
+
+      .audio-time {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.82rem;
+        color: #7a6a55;
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-width: 80px;
+        text-align: right;
+      }
+
+      .audio-tracklist {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .audio-track {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.6rem 1.2rem;
+        border-top: 1px solid rgba(42, 35, 22, 0.08);
+        cursor: pointer;
+        transition: background 150ms;
+      }
+
+      .audio-track:hover { background: rgba(42, 35, 22, 0.04); }
+
+      .audio-track.active {
+        background: rgba(156, 124, 58, 0.08);
+      }
+
+      .audio-track-num {
+        font-family: "Cinzel", serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        color: #9c7c3a;
+        width: 1.4rem;
+        flex-shrink: 0;
+        text-align: center;
+      }
+
+      .audio-track.active .audio-track-num { color: var(--ring); }
+
+      .audio-track-label {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1rem;
+        color: #2a2316;
+        flex: 1;
+      }
+
+      .audio-track.active .audio-track-label { color: #2a2316; font-weight: 600; }
+
+      .audio-track-dur {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.82rem;
+        color: #7a6a55;
+        flex-shrink: 0;
+      }
     </style>
   </head>
   <body>
@@ -51,11 +217,180 @@
         </div>
       </div>
 
+      <!-- ── LibriVox Audio Player ─────────────────────────────────── -->
+      <div class="audio-player" id="audio-player">
+        <div class="audio-header">
+          <span class="audio-header-title">Listen to the Recording</span>
+          <span class="audio-header-credit">LibriVox &middot; 1912 &middot; Public Domain</span>
+        </div>
+        <div class="audio-controls">
+          <button class="audio-play-btn" id="audio-play-btn" aria-label="Play">
+            <svg id="audio-play-icon" viewBox="0 0 16 16"><polygon points="3,1 13,8 3,15"/></svg>
+          </button>
+          <div class="audio-progress-wrap">
+            <div class="audio-track-name" id="audio-track-name">Introductions</div>
+            <input type="range" class="audio-progress" id="audio-progress" min="0" max="100" step="0.1" value="0" aria-label="Seek">
+          </div>
+          <span class="audio-time" id="audio-time">0:00 / 0:00</span>
+        </div>
+        <ul class="audio-tracklist" id="audio-tracklist">
+          <li class="audio-track active" data-src="audio/onehundredproofs_00_carpenter_128kb.mp3" data-index="0">
+            <span class="audio-track-num">I</span>
+            <span class="audio-track-label">Introductions</span>
+            <span class="audio-track-dur" data-index="0">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_01_carpenter_128kb.mp3" data-index="1">
+            <span class="audio-track-num">II</span>
+            <span class="audio-track-label">Proofs 1&ndash;25</span>
+            <span class="audio-track-dur" data-index="1">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_02_carpenter_128kb.mp3" data-index="2">
+            <span class="audio-track-num">III</span>
+            <span class="audio-track-label">Proofs 26&ndash;45</span>
+            <span class="audio-track-dur" data-index="2">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_03_carpenter_128kb.mp3" data-index="3">
+            <span class="audio-track-num">IV</span>
+            <span class="audio-track-label">Proofs 46&ndash;60</span>
+            <span class="audio-track-dur" data-index="3">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_04_carpenter_128kb.mp3" data-index="4">
+            <span class="audio-track-num">V</span>
+            <span class="audio-track-label">Proofs 61&ndash;85</span>
+            <span class="audio-track-dur" data-index="4">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_05_carpenter_128kb.mp3" data-index="5">
+            <span class="audio-track-num">VI</span>
+            <span class="audio-track-label">Proofs 86&ndash;100</span>
+            <span class="audio-track-dur" data-index="5">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_06_carpenter_128kb.mp3" data-index="6">
+            <span class="audio-track-num">VII</span>
+            <span class="audio-track-label">End Matter, Part 1</span>
+            <span class="audio-track-dur" data-index="6">&mdash;</span>
+          </li>
+          <li class="audio-track" data-src="audio/onehundredproofs_07_carpenter_128kb.mp3" data-index="7">
+            <span class="audio-track-num">VIII</span>
+            <span class="audio-track-label">End Matter, Part 2</span>
+            <span class="audio-track-dur" data-index="7">&mdash;</span>
+          </li>
+        </ul>
+      </div>
+
       <footer class="about-footer">
         <a href="archive.html" class="back-link">&larr; Back to Archive</a>
       </footer>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="pdf-viewer.js"></script>
+    <script>
+    (function () {
+      var audio = new Audio();
+      var tracks = Array.from(document.querySelectorAll('.audio-track'));
+      var playBtn = document.getElementById('audio-play-btn');
+      var playIcon = document.getElementById('audio-play-icon');
+      var progress = document.getElementById('audio-progress');
+      var timeEl = document.getElementById('audio-time');
+      var trackName = document.getElementById('audio-track-name');
+      var currentIndex = 0;
+      var isPlaying = false;
+
+      var ICONS = {
+        play: '<polygon points="3,1 13,8 3,15"/>',
+        pause: '<rect x="3" y="1" width="4" height="14"/><rect x="9" y="1" width="4" height="14"/>'
+      };
+
+      var LABELS = [
+        'Introductions', 'Proofs 1\u201325', 'Proofs 26\u201345', 'Proofs 46\u201360',
+        'Proofs 61\u201385', 'Proofs 86\u2013100', 'End Matter, Part 1', 'End Matter, Part 2'
+      ];
+
+      function fmt(s) {
+        if (isNaN(s) || s === Infinity) return '0:00';
+        var m = Math.floor(s / 60), sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
+      }
+
+      function setActive(idx) {
+        tracks.forEach(function (t, i) {
+          t.classList.toggle('active', i === idx);
+        });
+        trackName.textContent = LABELS[idx];
+        currentIndex = idx;
+      }
+
+      function loadTrack(idx, autoplay) {
+        setActive(idx);
+        audio.src = tracks[idx].dataset.src;
+        progress.value = 0;
+        progress.style.setProperty('--progress', '0%');
+        timeEl.textContent = '0:00 / 0:00';
+        if (autoplay) {
+          audio.play().catch(function () {});
+          isPlaying = true;
+          playIcon.innerHTML = ICONS.pause;
+        } else {
+          isPlaying = false;
+          playIcon.innerHTML = ICONS.play;
+        }
+      }
+
+      // Pre-load durations for all tracks (lightweight metadata fetch)
+      tracks.forEach(function (t, i) {
+        var tmp = new Audio();
+        tmp.preload = 'metadata';
+        tmp.src = t.dataset.src;
+        tmp.addEventListener('loadedmetadata', function () {
+          var el = document.querySelector('.audio-track-dur[data-index="' + i + '"]');
+          if (el) el.textContent = fmt(tmp.duration);
+        });
+      });
+
+      playBtn.addEventListener('click', function () {
+        if (!audio.src) loadTrack(0, false);
+        if (isPlaying) {
+          audio.pause();
+          isPlaying = false;
+          playIcon.innerHTML = ICONS.play;
+        } else {
+          audio.play().catch(function () {});
+          isPlaying = true;
+          playIcon.innerHTML = ICONS.pause;
+        }
+      });
+
+      tracks.forEach(function (t, i) {
+        t.addEventListener('click', function () {
+          loadTrack(i, true);
+        });
+      });
+
+      audio.addEventListener('timeupdate', function () {
+        if (!audio.duration) return;
+        var pct = (audio.currentTime / audio.duration) * 100;
+        progress.value = pct;
+        progress.style.setProperty('--progress', pct + '%');
+        timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+      });
+
+      progress.addEventListener('input', function () {
+        if (!audio.duration) return;
+        audio.currentTime = (progress.value / 100) * audio.duration;
+        progress.style.setProperty('--progress', progress.value + '%');
+      });
+
+      audio.addEventListener('ended', function () {
+        if (currentIndex < tracks.length - 1) {
+          loadTrack(currentIndex + 1, true);
+        } else {
+          isPlaying = false;
+          playIcon.innerHTML = ICONS.play;
+        }
+      });
+
+      // Load first track source silently so metadata is available
+      loadTrack(0, false);
+    })();
+    </script>
   </body>
 </html>

@@ -177,9 +177,22 @@
       return Promise.resolve();
     }
 
-    if (blitFromCache(num, canvas, ctx)) return Promise.resolve();
+    var cached = pageCache[num];
 
-    canvas.style.visibility = 'visible';
+    // If we have a full-DPR cached copy, blit it 1:1 and we're done
+    if (cached && cached !== 'pending' && cached.hiDpr) {
+      blitFromCache(num, canvas, ctx);
+      return Promise.resolve();
+    }
+
+    // If we only have a 1× preview, show it immediately for responsiveness,
+    // then fall through to render the full-DPR version on top of it
+    if (cached && cached !== 'pending' && !cached.hiDpr) {
+      blitFromCache(num, canvas, ctx);
+    } else {
+      canvas.style.visibility = 'visible';
+    }
+
     return pdfDoc.getPage(num).then(function (page) {
       var scale = cssScaleFor(page);
       var vp    = page.getViewport({ scale: scale * DPR });

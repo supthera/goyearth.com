@@ -285,19 +285,31 @@
   }
 
   // ── Load PDF ──────────────────────────────────────────────────────────────────
+  // disableAutoFetch + disableStream=false: use HTTP range requests so PDF.js
+  // fetches only the bytes it needs (xref + current page) rather than the full
+  // file — critical for the 21 MB Zetetic Astronomy PDF.
   pdfjsLib.getDocument({
     url: pdfPath,
     cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
     cMapPacked: true,
-    enableXfa: false
+    enableXfa: false,
+    disableAutoFetch: true,
+    disableStream: false,
+    rangeChunkSize: 65536
   }).promise.then(function (pdf) {
     pdfDoc = pdf;
     pageInfo.textContent = 'Loading\u2026';
     for (var i = 1; i <= Math.min(4, pdf.numPages); i++) warmPage(i);
     requestAnimationFrame(function () { renderPage(1); });
   }).catch(function (err) {
-    pageInfo.textContent = 'Failed to load PDF';
-    console.error(err);
+    console.error('Failed to load PDF:', err);
+    if (spinner) {
+      spinner.querySelector('.pdf-spinner-ring').style.display = 'none';
+      var label = spinner.querySelector('.pdf-spinner-label');
+      if (label) label.textContent = 'Failed to load';
+    } else {
+      pageInfo.textContent = 'Failed to load PDF';
+    }
   });
 
   // ── Navigation ────────────────────────────────────────────────────────────────

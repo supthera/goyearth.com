@@ -117,6 +117,10 @@
         <p class="book-meta">Samuel Birley Rowbotham &middot; 1865</p>
       </header>
 
+      <div id="pdf-spinner" class="pdf-spinner-outer">
+        <div class="pdf-spinner-ring"></div>
+        <p class="pdf-spinner-label">Loading…</p>
+      </div>
       <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="Zetetic Astronomoy - Earth Not A Globe.pdf" data-spread="true">
         <div class="pdf-toolbar">
           <button id="pdf-prev" class="pdf-nav-btn" disabled>&#8592; Prev</button>
@@ -124,10 +128,6 @@
           <button id="pdf-next" class="pdf-nav-btn">Next &#8594;</button>
         </div>
         <div class="pdf-canvas-wrap">
-          <div id="pdf-spinner" class="pdf-spinner">
-            <div class="pdf-spinner-ring"></div>
-            <p class="pdf-spinner-label">Loading&hellip;</p>
-          </div>
           <canvas id="pdf-canvas-left" class="pdf-canvas"></canvas>
           <canvas id="pdf-canvas-right" class="pdf-canvas"></canvas>
         </div>

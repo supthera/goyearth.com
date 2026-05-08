@@ -17,17 +17,14 @@
 }
 
 /* ── PDF viewer spinner ─────────────────────────────────────────────────────── */
-.pdf-canvas-wrap { position: relative; }
-
-.pdf-spinner {
-  position: absolute;
-  inset: 0;
+.pdf-spinner-outer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  pointer-events: none;
+  height: 78vh;
+  min-height: 420px;
 }
 
 .pdf-spinner-ring {

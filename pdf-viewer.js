@@ -15,6 +15,7 @@
   var ctxL    = canvasL && canvasL.getContext('2d');
   var ctxR    = canvasR && canvasR.getContext('2d');
   var spinner = document.getElementById('pdf-spinner');
+  if (spinner) spinner.style.display = 'flex';
 
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -275,9 +276,7 @@
     url: pdfPath,
     cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
     cMapPacked: true,
-    enableXfa: false,
-    disableAutoFetch: true,
-    rangeChunkSize: 65536
+    enableXfa: false
   }).promise.then(function (pdf) {
     pdfDoc = pdf;
     pageInfo.textContent = 'Loading\u2026';

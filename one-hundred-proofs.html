@@ -390,6 +390,18 @@
 
       // Load first track source silently so metadata is available
       loadTrack(0, false);
+
+      // Match audio player width to the PDF shell exactly
+      var audioPlayer = document.getElementById('audio-player');
+      var pdfShell    = document.getElementById('pdf-viewer-shell');
+      function syncWidth() {
+        var w = pdfShell.offsetWidth;
+        if (w > 0) audioPlayer.style.width = w + 'px';
+      }
+      // Run once when the shell becomes visible (opacity transition ends)
+      pdfShell.addEventListener('transitionend', syncWidth, { once: true });
+      // Keep in sync on resize
+      window.addEventListener('resize', syncWidth);
     })();
     </script>
   </body>

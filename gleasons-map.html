@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <title>Gleason's New Standard Map — Archive — Goyim Earth</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="stylesheet" href="styles.css" />
     <style>
       .book-header { margin-bottom: 1.6rem; }
@@ -34,13 +35,17 @@
         <p class="book-meta">Alexander Gleason &middot; 1892</p>
       </header>
 
-      <div class="pdf-shell" id="pdf-viewer-shell" data-pdf="US497917.pdf" data-spread="true">
+      <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="US497917.pdf" data-spread="true">
         <div class="pdf-toolbar">
           <button id="pdf-prev" class="pdf-nav-btn" disabled>&#8592; Prev</button>
           <span id="pdf-page-info" class="pdf-toolbar-title">Loading&hellip;</span>
           <button id="pdf-next" class="pdf-nav-btn">Next &#8594;</button>
         </div>
         <div class="pdf-canvas-wrap">
+          <div id="pdf-spinner" class="pdf-spinner">
+            <div class="pdf-spinner-ring"></div>
+            <p class="pdf-spinner-label">Loading&hellip;</p>
+          </div>
           <canvas id="pdf-canvas-left" class="pdf-canvas"></canvas>
           <canvas id="pdf-canvas-right" class="pdf-canvas"></canvas>
         </div>

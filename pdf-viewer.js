@@ -14,6 +14,7 @@
   var canvasR = document.getElementById('pdf-canvas-right');
   var ctxL    = canvasL && canvasL.getContext('2d');
   var ctxR    = canvasR && canvasR.getContext('2d');
+  var spinner = document.getElementById('pdf-spinner');
 
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -243,6 +244,7 @@
 
       if (firstRender) {
         firstRender = false;
+        if (spinner) spinner.style.display = 'none';
         shell.style.visibility = 'visible';
         requestAnimationFrame(function () { shell.style.opacity = '1'; });
       }
@@ -273,7 +275,9 @@
     url: pdfPath,
     cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
     cMapPacked: true,
-    enableXfa: false
+    enableXfa: false,
+    disableAutoFetch: true,
+    rangeChunkSize: 65536
   }).promise.then(function (pdf) {
     pdfDoc = pdf;
     pageInfo.textContent = 'Loading\u2026';

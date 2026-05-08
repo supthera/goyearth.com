@@ -285,17 +285,11 @@
   }
 
   // ── Load PDF ──────────────────────────────────────────────────────────────────
-  // disableAutoFetch + disableStream=false: use HTTP range requests so PDF.js
-  // fetches only the bytes it needs (xref + current page) rather than the full
-  // file — critical for the 21 MB Zetetic Astronomy PDF.
   pdfjsLib.getDocument({
     url: pdfPath,
     cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
     cMapPacked: true,
-    enableXfa: false,
-    disableAutoFetch: true,
-    disableStream: false,
-    rangeChunkSize: 65536
+    enableXfa: false
   }).promise.then(function (pdf) {
     pdfDoc = pdf;
     pageInfo.textContent = 'Loading\u2026';

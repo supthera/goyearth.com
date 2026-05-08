@@ -40,6 +40,8 @@
 
       /* ── Audio player ───────────────────────────────────────────────── */
       .audio-player {
+        opacity: 0;
+        transition: opacity 150ms ease;
         border: 2px solid rgba(42, 35, 22, 0.2);
         border-radius: 8px;
         overflow: hidden;
@@ -150,7 +152,6 @@
         white-space: nowrap;
         flex-shrink: 0;
         min-width: 80px;
-        text-align: right;
       }
 
       .audio-tracklist {
@@ -409,6 +410,11 @@
 
       // Load first track source silently so metadata is available
       loadTrack(0, false);
+
+      // Fade in audio player after PDF viewer finishes its reveal transition
+      document.getElementById('pdf-viewer-shell').addEventListener('transitionend', function () {
+        document.getElementById('audio-player').style.opacity = '1';
+      }, { once: true });
 
     })();
     </script>

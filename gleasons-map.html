@@ -21,6 +21,37 @@
       .pdf-canvas-wrap { overflow: hidden; height: 78vh; min-height: 420px; background: #c8bfad; display: flex; justify-content: center; align-items: center; gap: 3px; padding: 1rem; }
       .pdf-canvas { display: block; box-shadow: 0 4px 20px rgba(42,35,22,0.25); }
       main.about-page { max-width: min(98vw, 1600px); }
+
+      .map-gallery {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+        margin-top: 1.8rem;
+      }
+
+      .map-gallery-item {
+        border: 2px solid rgba(42, 35, 22, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(42, 35, 22, 0.12);
+      }
+
+      .map-gallery-item img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .map-gallery-caption {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.88rem;
+        color: #7a6a55;
+        letter-spacing: 0.03em;
+        text-align: center;
+        padding: 0.5rem 0.8rem 0.6rem;
+        background: rgba(42, 35, 22, 0.04);
+        border-top: 1px solid rgba(42, 35, 22, 0.12);
+      }
     </style>
   </head>
   <body>
@@ -48,6 +79,17 @@
         <div class="pdf-canvas-wrap">
           <canvas id="pdf-canvas-left" class="pdf-canvas"></canvas>
           <canvas id="pdf-canvas-right" class="pdf-canvas"></canvas>
+        </div>
+      </div>
+
+      <div class="map-gallery">
+        <div class="map-gallery-item">
+          <img src="images/gleason-map-front.jpg" alt="Gleason's New Standard Map of the World, 1892 — front" loading="lazy" />
+          <p class="map-gallery-caption">Front &mdash; Gleason&rsquo;s New Standard Map of the World, 1892</p>
+        </div>
+        <div class="map-gallery-item">
+          <img src="images/gleason-map-back.jpg" alt="Gleason's New Standard Map of the World, 1892 — descriptive key" loading="lazy" />
+          <p class="map-gallery-caption">Verso &mdash; Descriptive Key &amp; Longitude and Time Calculator</p>
         </div>
       </div>
 

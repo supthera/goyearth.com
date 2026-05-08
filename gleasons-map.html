@@ -27,6 +27,7 @@
         grid-template-columns: 1fr 1fr;
         gap: 1.2rem;
         margin-top: 1.8rem;
+        align-items: start;
       }
 
       .map-gallery-item {
@@ -42,15 +43,14 @@
         height: auto;
       }
 
-      .map-gallery-caption {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 0.88rem;
-        color: #7a6a55;
-        letter-spacing: 0.03em;
-        text-align: center;
-        padding: 0.5rem 0.8rem 0.6rem;
-        background: rgba(42, 35, 22, 0.04);
-        border-top: 1px solid rgba(42, 35, 22, 0.12);
+      .map-gallery-item:last-child {
+        aspect-ratio: 4 / 5;
+      }
+
+      .map-gallery-item:last-child img {
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
       }
     </style>
   </head>
@@ -85,11 +85,9 @@
       <div class="map-gallery">
         <div class="map-gallery-item">
           <img src="images/gleason-map-front.jpg" alt="Gleason's New Standard Map of the World, 1892 — front" loading="lazy" />
-          <p class="map-gallery-caption">Front &mdash; Gleason&rsquo;s New Standard Map of the World, 1892</p>
         </div>
         <div class="map-gallery-item">
           <img src="images/gleason-map-back.jpg" alt="Gleason's New Standard Map of the World, 1892 — descriptive key" loading="lazy" />
-          <p class="map-gallery-caption">Verso &mdash; Descriptive Key &amp; Longitude and Time Calculator</p>
         </div>
       </div>
 

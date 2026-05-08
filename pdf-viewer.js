@@ -53,7 +53,7 @@
     var H     = wrap.getBoundingClientRect().height;
     if (H < 100) H = window.innerHeight * 0.78;
     var availH = Math.max(H - 32, 200);
-    var viewW  = window.innerWidth;
+    var viewW  = wrap.getBoundingClientRect().width || window.innerWidth;
     var availW = spread
       ? Math.max((viewW - 35) / 2, 100)
       : Math.max(viewW - 32, 100);

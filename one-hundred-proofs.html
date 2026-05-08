@@ -22,11 +22,24 @@
       .pdf-canvas { display: block; box-shadow: 0 4px 20px rgba(42,35,22,0.25); }
       main.about-page { max-width: min(98vw, 1600px); }
 
+      /* ── Viewer row layout ──────────────────────────────────────────── */
+      .viewer-row {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .audio-sidebar {
+        flex-shrink: 0;
+        width: 230px;
+        align-self: center;
+      }
+      .viewer-content {
+        flex: 1;
+        min-width: 0;
+      }
+
       /* ── Audio player ───────────────────────────────────────────────── */
       .audio-player {
-        margin-top: 2.5rem;
-        margin-left: auto;
-        margin-right: auto;
         border: 2px solid rgba(42, 35, 22, 0.2);
         border-radius: 8px;
         overflow: hidden;
@@ -203,24 +216,10 @@
         <p class="book-meta">William Carpenter &middot; 1885</p>
       </header>
 
-      <div id="pdf-spinner" class="pdf-spinner-outer">
-        <div class="pdf-spinner-ring"></div>
-        <p class="pdf-spinner-label">Loading…</p>
-      </div>
-      <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="One Hundred Proofs that the earth is not a globe.pdf" data-spread="true">
-        <div class="pdf-toolbar">
-          <button id="pdf-prev" class="pdf-nav-btn" disabled>&#8592; Prev</button>
-          <span id="pdf-page-info" class="pdf-toolbar-title">Loading…</span>
-          <button id="pdf-next" class="pdf-nav-btn">Next &#8594;</button>
-        </div>
-        <div class="pdf-canvas-wrap">
-          <canvas id="pdf-canvas-left" class="pdf-canvas"></canvas>
-          <canvas id="pdf-canvas-right" class="pdf-canvas"></canvas>
-        </div>
-      </div>
-
-      <!-- ── LibriVox Audio Player ─────────────────────────────────── -->
-      <div class="audio-player" id="audio-player">
+      <div class="viewer-row">
+        <div class="audio-sidebar">
+          <!-- ── LibriVox Audio Player ─────────────────────────────────── -->
+          <div class="audio-player" id="audio-player">
         <div class="audio-header">
           <span class="audio-header-title">Listen to the Recording</span>
         </div>
@@ -276,6 +275,25 @@
             <span class="audio-track-dur" data-index="7">&mdash;</span>
           </li>
         </ul>
+          </div>
+        </div>
+        <div class="viewer-content">
+          <div id="pdf-spinner" class="pdf-spinner-outer">
+            <div class="pdf-spinner-ring"></div>
+            <p class="pdf-spinner-label">Loading…</p>
+          </div>
+          <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="One Hundred Proofs that the earth is not a globe.pdf" data-spread="true">
+            <div class="pdf-toolbar">
+              <button id="pdf-prev" class="pdf-nav-btn" disabled>&#8592; Prev</button>
+              <span id="pdf-page-info" class="pdf-toolbar-title">Loading…</span>
+              <button id="pdf-next" class="pdf-nav-btn">Next &#8594;</button>
+            </div>
+            <div class="pdf-canvas-wrap">
+              <canvas id="pdf-canvas-left" class="pdf-canvas"></canvas>
+              <canvas id="pdf-canvas-right" class="pdf-canvas"></canvas>
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer class="about-footer">
@@ -392,19 +410,6 @@
       // Load first track source silently so metadata is available
       loadTrack(0, false);
 
-      // Match audio player width to the PDF shell exactly
-      var audioPlayer = document.getElementById('audio-player');
-      var pdfShell    = document.getElementById('pdf-viewer-shell');
-      function syncWidth() {
-        var w = pdfShell.offsetWidth;
-        if (w > 0) audioPlayer.style.width = w + 'px';
-      }
-      // Run immediately — shell is in DOM at full layout width from the start
-      syncWidth();
-      // Run once more when the shell becomes visible in case layout shifts
-      pdfShell.addEventListener('transitionend', syncWidth, { once: true });
-      // Keep in sync on resize
-      window.addEventListener('resize', syncWidth);
     })();
     </script>
   </body>

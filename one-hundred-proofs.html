@@ -223,7 +223,6 @@
       <div class="audio-player" id="audio-player">
         <div class="audio-header">
           <span class="audio-header-title">Listen to the Recording</span>
-          <span class="audio-header-credit">LibriVox &middot; 1912 &middot; Public Domain</span>
         </div>
         <div class="audio-controls">
           <button class="audio-play-btn" id="audio-play-btn" aria-label="Play">
@@ -400,7 +399,9 @@
         var w = pdfShell.offsetWidth;
         if (w > 0) audioPlayer.style.width = w + 'px';
       }
-      // Run once when the shell becomes visible (opacity transition ends)
+      // Run immediately — shell is in DOM at full layout width from the start
+      syncWidth();
+      // Run once more when the shell becomes visible in case layout shifts
       pdfShell.addEventListener('transitionend', syncWidth, { once: true });
       // Keep in sync on resize
       window.addEventListener('resize', syncWidth);

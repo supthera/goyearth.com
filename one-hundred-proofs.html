@@ -24,17 +24,17 @@
 
       /* ── Viewer row layout ──────────────────────────────────────────── */
       .viewer-row {
-        display: flex;
+        display: grid;
+        grid-template-columns: 230px 1fr 230px;
         align-items: center;
         gap: 1.5rem;
       }
       .audio-sidebar {
-        flex-shrink: 0;
-        width: 230px;
+        grid-column: 1;
         align-self: center;
       }
       .viewer-content {
-        flex: 1;
+        grid-column: 2;
         min-width: 0;
       }
 

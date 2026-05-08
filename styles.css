@@ -234,6 +234,76 @@ h1 {
   opacity: 1;
 }
 
+.site-nav {
+  text-align: center;
+  margin-top: 1.2rem;
+}
+
+.site-nav a {
+  font-family: "Cinzel", serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 200ms;
+}
+
+.site-nav a:hover {
+  border-bottom-color: var(--ring);
+}
+
+.about-page {
+  max-width: 780px;
+}
+
+.about-nav,
+.about-footer {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.back-link {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid transparent;
+  transition: border-color 200ms;
+}
+
+.back-link:hover {
+  border-bottom-color: var(--ring);
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.about-content section {
+  margin-bottom: 2rem;
+}
+
+.about-content h2 {
+  font-family: "Cinzel", serif;
+  font-size: 1.4rem;
+  margin: 0 0 0.6rem;
+}
+
+.about-content p {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  margin: 0 0 1rem;
+}
+
+.about-footer {
+  border-top: 1px solid rgba(42, 35, 22, 0.2);
+  margin-top: 2rem;
+}
+
 @keyframes rise {
   from {
     opacity: 0;

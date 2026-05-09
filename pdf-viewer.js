@@ -175,7 +175,11 @@
   // ── Foreground render ─────────────────────────────────────────────────────────
   function renderOne(num, canvas, ctx) {
     if (!canvas || num == null || num < 1 || num > pdfDoc.numPages) {
-      if (canvas) { canvas.style.visibility = 'hidden'; }
+      if (canvas) {
+        canvas.style.visibility = 'hidden';
+        canvas.style.width  = '0';
+        canvas.style.height = '0';
+      }
       return Promise.resolve();
     }
 

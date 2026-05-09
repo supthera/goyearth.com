@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <title>Kings Dethroned — Archive — Goyim Earth</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <title>The Enlightenment of the World — Archive — Goyim Earth</title>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../styles.css" />
     <style>
       .book-header { margin-bottom: 1.6rem; }
-      .book-header h1 { font-size: clamp(1.5rem, 3vw, 2.4rem); margin-bottom: 0.3rem; }
+      .book-header h1 { font-size: clamp(1.3rem, 2vw, 1.8rem); margin-bottom: 0.3rem; text-wrap: balance; }
       .book-meta { font-family: "Cormorant Garamond", serif; font-size: 1rem; color: #7a6a55; letter-spacing: 0.04em; margin: 0 0 0.8rem; }
       .book-commentary { font-family: "Cormorant Garamond", serif; font-size: 1.05rem; line-height: 1.8; color: #2a2316; max-width: 680px; margin: 0 0 1.6rem; }
       .pdf-shell { border: 2px solid rgba(42, 35, 22, 0.2); border-radius: 8px; overflow: hidden; background: rgba(42, 35, 22, 0.04); box-shadow: 0 8px 24px rgba(42, 35, 22, 0.12); }
@@ -27,19 +27,19 @@
     <div class="paper"></div>
     <main class="layout about-page">
       <nav class="about-nav">
-        <a href="archive.html" class="back-link">&larr; Back to Archive</a>
+        <a href="../archive.html" class="back-link">&larr; Back to Archive</a>
       </nav>
 
       <header class="about-header book-header">
-        <h1>Kings Dethroned</h1>
-        <p class="book-meta">Gerrard Hickson &middot; 1922</p>
+        <h1>The Enlightenment of the World</h1>
+        <p class="book-meta">Abizaid, John George &middot; 1868</p>
       </header>
 
       <div id="pdf-spinner" class="pdf-spinner-outer">
         <div class="pdf-spinner-ring"></div>
         <p class="pdf-spinner-label">Loading…</p>
       </div>
-      <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="archive-pdfs/Kings Dethroned - compressed.pdf" data-spread="true">
+      <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="../archive-pdfs/enlightenment of the world .pdf" data-spread="true">
         <div class="pdf-toolbar">
           <button id="pdf-prev" class="pdf-nav-btn" disabled>&#8592; Prev</button>
           <span id="pdf-page-info" class="pdf-toolbar-title">Loading&hellip;</span>
@@ -52,10 +52,10 @@
       </div>
 
       <footer class="about-footer">
-        <a href="archive.html" class="back-link">&larr; Back to Archive</a>
+        <a href="../archive.html" class="back-link">&larr; Back to Archive</a>
       </footer>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="pdf-viewer.js"></script>
+    <script src="../pdf-viewer.js"></script>
   </body>
 </html>

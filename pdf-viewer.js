@@ -9,6 +9,8 @@
   var pageInfo = document.getElementById('pdf-page-info');
   var pdfPath  = shell.dataset.pdf;
   var spread   = shell.dataset.spread === 'true';
+  // Force single-page on narrow screens — spread halves readable width on phones
+  if (window.innerWidth < 600) spread = false;
 
   var canvasL = document.getElementById('pdf-canvas-left');
   var canvasR = document.getElementById('pdf-canvas-right');
@@ -17,7 +19,7 @@
   var spinner = document.getElementById('pdf-spinner');
   if (spinner) spinner.style.display = 'flex';
 
-  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var DPR = Math.min(window.devicePixelRatio || 1, 3);
 
   shell.style.visibility = 'hidden';
   shell.style.transition = 'opacity 150ms ease';
@@ -293,8 +295,13 @@
   }).promise.then(function (pdf) {
     pdfDoc = pdf;
     pageInfo.textContent = 'Loading\u2026';
-    for (var i = 1; i <= Math.min(4, pdf.numPages); i++) warmPage(i);
-    requestAnimationFrame(function () { renderPage(1); });
+    // Auto-detect landscape scans — if page 1 is wider than tall, disable spread
+    return pdf.getPage(1).then(function (page) {
+      var vp = page.getViewport({ scale: 1 });
+      if (vp.width > vp.height) spread = false;
+      for (var i = 1; i <= Math.min(4, pdf.numPages); i++) warmPage(i);
+      requestAnimationFrame(function () { renderPage(1); });
+    });
   }).catch(function (err) {
     console.error('Failed to load PDF:', err);
     if (spinner) {

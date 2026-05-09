@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <title>Is The Earth A Globe Whirling In Space? — Archive — Goyim Earth</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .book-header { margin-bottom: 1.6rem; }
+      .book-header h1 { font-size: clamp(1.5rem, 3vw, 2.4rem); margin-bottom: 0.3rem; }
+      .book-meta { font-family: "Cormorant Garamond", serif; font-size: 1rem; color: #7a6a55; letter-spacing: 0.04em; margin: 0 0 0.8rem; }
+      .book-commentary { font-family: "Cormorant Garamond", serif; font-size: 1.05rem; line-height: 1.8; color: #2a2316; max-width: 680px; margin: 0 0 1.6rem; }
+      .pdf-shell { border: 2px solid rgba(42, 35, 22, 0.2); border-radius: 8px; overflow: hidden; background: rgba(42, 35, 22, 0.04); box-shadow: 0 8px 24px rgba(42, 35, 22, 0.12); }
+      .pdf-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.6rem 1rem; background: rgba(42, 35, 22, 0.07); border-bottom: 1px solid rgba(42, 35, 22, 0.15); }
+      .pdf-toolbar-title { font-family: "Cinzel", serif; font-size: 0.85rem; letter-spacing: 0.06em; color: #4a3d2a; flex: 1; text-align: center; }
+      .pdf-nav-btn { font-family: "Cinzel", serif; font-size: 0.8rem; letter-spacing: 0.06em; color: #4a3d2a; background: rgba(248,242,227,0.9); border: 1.5px solid rgba(42,35,22,0.3); border-radius: 5px; padding: 0.35rem 0.9rem; cursor: pointer; transition: background 180ms, border-color 180ms; }
+      .pdf-nav-btn:hover:not(:disabled) { background: #fff8ec; border-color: #9c7c3a; }
+      .pdf-nav-btn:disabled { opacity: 0.35; cursor: default; }
+      .pdf-canvas-wrap { overflow: hidden; height: 78vh; min-height: 420px; background: #c8bfad; display: flex; justify-content: center; align-items: center; gap: 3px; padding: 1rem; }
+      .pdf-canvas { display: block; box-shadow: 0 4px 20px rgba(42,35,22,0.25); }
+      main.about-page { max-width: min(98vw, 1600px); }
+    </style>
+  </head>
+  <body>
+    <div class="paper"></div>
+    <main class="layout about-page">
+      <nav class="about-nav">
+        <a href="archive.html" class="back-link">&larr; Back to Archive</a>
+      </nav>
+
+      <header class="about-header book-header">
+        <h1>Is The Earth A Globe Whirling In Space?</h1>
+        <p class="book-meta">Karl A. Smith &middot; 1909</p>
+      </header>
+
+      <div id="pdf-spinner" class="pdf-spinner-outer">
+        <div class="pdf-spinner-ring"></div>
+        <p class="pdf-spinner-label">Loading…</p>
+      </div>
+      <div class="pdf-shell" id="pdf-viewer-shell" style="visibility:hidden;opacity:0;transition:opacity 150ms ease" data-pdf="Is The Earth A Globe Whirling In Space (Karl A. Smith) - compressed.pdf" data-spread="true">
+        <div class="pdf-toolbar">
+          <button id="pdf-prev" class="pdf-nav-btn" disabled>&#8592; Prev</button>
+          <span id="pdf-page-info" class="pdf-toolbar-title">Loading&hellip;</span>
+          <button id="pdf-next" class="pdf-nav-btn">Next &#8594;</button>
+        </div>
+        <div class="pdf-canvas-wrap">
+          <canvas id="pdf-canvas-left" class="pdf-canvas"></canvas>
+          <canvas id="pdf-canvas-right" class="pdf-canvas"></canvas>
+        </div>
+      </div>
+
+      <footer class="about-footer">
+        <a href="archive.html" class="back-link">&larr; Back to Archive</a>
+      </footer>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="pdf-viewer.js"></script>
+  </body>
+</html>
